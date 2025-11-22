@@ -1,7 +1,9 @@
 import axios from 'axios';
 
-const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000';
+// Use the backend URL from .env or fallback to localhost
+const API_BASE_URL = process.env.REACT_APP_API_URL || 'https://mediredy-backend-3604.onrender.com';
 
+// Create axios instance
 const api = axios.create({
   baseURL: API_BASE_URL,
   headers: {
@@ -28,7 +30,7 @@ export const analyzeVitalSigns = async (vitals) => {
 export const detectInjury = async (file) => {
   const formData = new FormData();
   formData.append('file', file);
-  
+
   const response = await api.post('/api/injury-detection', formData, {
     headers: {
       'Content-Type': 'multipart/form-data',
@@ -41,7 +43,7 @@ export const detectInjury = async (file) => {
 export const analyzeReport = async (file) => {
   const formData = new FormData();
   formData.append('file', file);
-  
+
   const response = await api.post('/api/report-analysis', formData, {
     headers: {
       'Content-Type': 'multipart/form-data',
@@ -63,7 +65,7 @@ export const sendChatMessage = async (message, history = []) => {
 export const voiceToText = async (audioFile) => {
   const formData = new FormData();
   formData.append('audio', audioFile);
-  
+
   const response = await api.post('/api/voice-to-text', formData, {
     headers: {
       'Content-Type': 'multipart/form-data',
