@@ -43,9 +43,11 @@ const Home = () => {
 
   return (
     <div className="page-container">
-      <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
-        <h1 className="page-title">Welcome to Mediredy AI Doctor</h1>
-        <p className="page-subtitle">
+      <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
+        <h1 className="page-title" style={{ fontSize: '2.6rem', textAlign: 'center' }}>
+          Welcome to Mediredy AI Doctor
+        </h1>
+        <p className="page-subtitle" style={{ fontSize: '1rem', maxWidth: '560px', margin: '0.4rem auto 0' }}>
           Your intelligent medical assistant powered by cutting-edge AI technology
         </p>
       </div>
@@ -66,14 +68,14 @@ const Home = () => {
       </div>
 
       <div style={{ 
-        marginTop: '3rem', 
-        padding: '2rem', 
-        background: '#fff3cd', 
-        borderRadius: '10px',
-        border: '2px solid #ffc107'
+        marginTop: '2.5rem', 
+        padding: '1.5rem 1.75rem', 
+        background: 'rgba(251,191,36,0.07)', 
+        borderRadius: '12px',
+        border: '1px solid rgba(251,191,36,0.25)'
       }}>
-        <h3 style={{ color: '#856404', marginBottom: '1rem' }}>⚠️ Important Notice</h3>
-        <p style={{ color: '#856404', lineHeight: '1.6' }}>
+        <h3 style={{ color: '#fbbf24', marginBottom: '0.6rem', fontSize: '0.95rem', fontWeight: 600 }}>⚠️ Important Notice</h3>
+        <p style={{ color: '#94a3b8', lineHeight: '1.7', fontSize: '0.88rem' }}>
           Mediredy AI Doctor is an AI-powered medical assistant designed to provide general health information 
           and preliminary assessments. This tool is not a replacement for professional medical advice, diagnosis, 
           or treatment. Always seek the advice of your physician or other qualified health provider with any 
