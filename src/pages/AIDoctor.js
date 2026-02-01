@@ -138,13 +138,24 @@ const AIDoctor = () => {
     }
   };
 
-// Text to speech with max duration
-const speakText = async (text, maxDuration = 30000) => { // 30 seconds
-  try {
-    const response = await api.post('/api/voice/text-to-speech', { text });
-    if (response.data.audio) {
-      playAudio(response.data.audio);
-    } else {
+  // Text to speech with max duration
+  const speakText = async (text, maxDuration = 30000) => { // 30 seconds
+    try {
+      const response = await api.post('/api/voice/text-to-speech', { text });
+      if (response.data.audio) {
+        playAudio(response.data.audio);
+      } else {
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.rate = 1.5;
+
+        const timeoutId = setTimeout(() => {
+          window.speechSynthesis.cancel();
+        }, maxDuration);
+
+        utterance.onend = () => clearTimeout(timeoutId);
+        window.speechSynthesis.speak(utterance);
+      }
+    } catch {
       const utterance = new SpeechSynthesisUtterance(text);
       utterance.rate = 1.5;
 
@@ -155,19 +166,7 @@ const speakText = async (text, maxDuration = 30000) => { // 30 seconds
       utterance.onend = () => clearTimeout(timeoutId);
       window.speechSynthesis.speak(utterance);
     }
-  } catch {
-    const utterance = new SpeechSynthesisUtterance(text);
-    utterance.rate = 1.5;
-
-    const timeoutId = setTimeout(() => {
-      window.speechSynthesis.cancel();
-    }, maxDuration);
-
-    utterance.onend = () => clearTimeout(timeoutId);
-    window.speechSynthesis.speak(utterance);
-  }
-};
-
+  };
 
   // Play audio
   const playAudio = (base64Audio) => {
@@ -279,29 +278,37 @@ const speakText = async (text, maxDuration = 30000) => { // 30 seconds
       <h1 className="page-title">🏥 AI Doctor Consultation</h1>
       <p className="page-subtitle">Voice-powered medical consultation with real-time image analysis</p>
       
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem', marginTop: '1.5rem' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.25rem', marginTop: '1.25rem' }}>
         {/* Video Feed Column */}
         <div style={{ 
-          background: 'white', 
-          borderRadius: '12px', 
-          padding: '1.5rem',
-          boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
+          background: '#1a2540', 
+          border: '1px solid #1e2d4a',
+          borderRadius: '14px', 
+          padding: '1.25rem',
         }}>
-          <div style={{ display: 'flex', alignItems: 'center', marginBottom: '1rem' }}>
-            <h2 style={{ margin: 0, fontSize: '1.5rem' }}>📹 Live Camera</h2>
+          <div style={{ display: 'flex', alignItems: 'center', marginBottom: '0.85rem' }}>
+            <h2 style={{ margin: 0, fontSize: '1.05rem', color: '#e2e8f0', fontWeight: 600 }}>📹 Live Camera</h2>
             {isListening && (
               <span style={{ 
-                marginLeft: '1rem', 
-                color: '#10b981', 
-                fontSize: '0.9rem',
+                marginLeft: '0.85rem', 
+                color: '#14b8a6', 
+                fontSize: '0.78rem',
                 display: 'flex',
-                alignItems: 'center'
+                alignItems: 'center',
+                fontWeight: 600,
+                textTransform: 'uppercase',
+                letterSpacing: '0.4px'
               }}>
                 <span style={{ 
                   animation: 'pulse 2s ease-in-out infinite',
-                  marginRight: '0.5rem'
-                }}>●</span>
-                Listening...
+                  marginRight: '0.4rem',
+                  display: 'inline-block',
+                  width: '8px',
+                  height: '8px',
+                  borderRadius: '50%',
+                  background: '#14b8a6'
+                }}></span>
+                Listening
               </span>
             )}
           </div>
@@ -309,10 +316,11 @@ const speakText = async (text, maxDuration = 30000) => { // 30 seconds
           {/* Video Container */}
           <div style={{ 
             position: 'relative',
-            background: '#000',
-            borderRadius: '8px',
+            background: '#0f1729',
+            borderRadius: '10px',
             overflow: 'hidden',
-            height: '400px'
+            height: '360px',
+            border: '1px solid #1e2d4a'
           }}>
             <video
               ref={videoRef}
@@ -331,12 +339,12 @@ const speakText = async (text, maxDuration = 30000) => { // 30 seconds
                   position: 'absolute',
                   top: '8px',
                   right: '8px',
-                  width: '120px',
-                  height: '120px',
+                  width: '100px',
+                  height: '100px',
                   objectFit: 'cover',
                   borderRadius: '8px',
-                  border: '3px solid white',
-                  boxShadow: '0 4px 6px rgba(0,0,0,0.3)'
+                  border: '2px solid #14b8a6',
+                  boxShadow: '0 4px 12px rgba(0,0,0,0.4)'
                 }}
               />
             )}
@@ -347,28 +355,32 @@ const speakText = async (text, maxDuration = 30000) => { // 30 seconds
                 top: '50%',
                 left: '50%',
                 transform: 'translate(-50%, -50%)',
-                background: 'rgba(0,0,0,0.8)',
-                color: 'white',
-                padding: '1rem 2rem',
-                borderRadius: '8px'
+                background: 'rgba(15,23,41,0.9)',
+                color: '#14b8a6',
+                padding: '1rem 1.75rem',
+                borderRadius: '10px',
+                border: '1px solid #1e2d4a',
+                textAlign: 'center',
+                fontSize: '0.85rem',
+                fontWeight: 600
               }}>
-                <div className="spinner" style={{ margin: '0 auto 0.5rem', width: '30px', height: '30px' }}></div>
+                <div className="spinner" style={{ margin: '0 auto 0.5rem', width: '26px', height: '26px' }}></div>
                 Analyzing...
               </div>
             )}
           </div>
 
-          {/* Buttons in 1 line */}
+          {/* Buttons */}
           <div style={{ 
             display: 'flex',
-            gap: '0.5rem',
-            marginTop: '1rem',
+            gap: '0.45rem',
+            marginTop: '0.85rem',
             flexWrap: 'wrap'
           }}>
             <button
               onClick={isListening ? stopListening : startListening}
               className={`btn ${isListening ? 'btn-danger' : 'btn-primary'}`}
-              style={{ fontSize: '0.9rem', padding: '0.75rem', flex: 1 }}
+              style={{ fontSize: '0.8rem', padding: '0.6rem 0.75rem', flex: 1, minWidth: '80px' }}
             >
               {isListening ? '🔴 Stop' : '🎤 Start'}
             </button>
@@ -377,73 +389,93 @@ const speakText = async (text, maxDuration = 30000) => { // 30 seconds
               onClick={analyzeInjury}
               disabled={isAnalyzing}
               className="btn btn-primary"
-              style={{ fontSize: '0.9rem', padding: '0.75rem', flex: 1 }}
+              style={{ fontSize: '0.8rem', padding: '0.6rem 0.75rem', flex: 1, minWidth: '80px' }}
             >
-              📸 Capture Injury
+              📸 Injury
             </button>
             
             <button
               onClick={analyzeReport}
               disabled={isAnalyzing}
               className="btn btn-primary"
-              style={{ fontSize: '0.9rem', padding: '0.75rem', flex: 1 }}
+              style={{ fontSize: '0.8rem', padding: '0.6rem 0.75rem', flex: 1, minWidth: '80px' }}
             >
-              📋 Capture Report Image
+              📋 Report
             </button>
           </div>
 
           {/* Transcript Display */}
           {transcript && (
             <div style={{ 
-              marginTop: '1rem', 
-              padding: '1rem', 
-              background: '#f3f4f6', 
+              marginTop: '0.85rem', 
+              padding: '0.85rem 1rem', 
+              background: '#0f1729', 
+              border: '1px solid #1e2d4a',
               borderRadius: '8px'
             }}>
-              <p style={{ fontSize: '0.85rem', color: '#6b7280', margin: '0 0 0.5rem' }}>
-                You're saying:
+              <p style={{ fontSize: '0.75rem', color: '#64748b', margin: '0 0 0.3rem', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                You're saying
               </p>
-              <p style={{ margin: 0, color: '#111827' }}>{transcript}</p>
+              <p style={{ margin: 0, color: '#e2e8f0', fontSize: '0.9rem' }}>{transcript}</p>
             </div>
           )}
         </div>
 
         {/* Chat Column */}
         <div style={{ 
-          background: 'white', 
-          borderRadius: '12px', 
-          padding: '1.5rem',
-          boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+          background: '#1a2540', 
+          border: '1px solid #1e2d4a',
+          borderRadius: '14px', 
+          padding: '1.25rem',
           display: 'flex',
           flexDirection: 'column',
-          height: '600px'
+          height: '560px'
         }}>
-          <h2 style={{ margin: '0 0 1rem 0', fontSize: '1.5rem' }}>💬 Conversation</h2>
+          <h2 style={{ margin: '0 0 0.85rem 0', fontSize: '1.05rem', color: '#e2e8f0', fontWeight: 600 }}>💬 Conversation</h2>
           
           {/* Chat Messages */}
           <div style={{ 
             flex: 1, 
             overflowY: 'auto', 
-            marginBottom: '1rem',
-            padding: '0.5rem'
+            marginBottom: '0.5rem',
+            padding: '0.5rem',
+            scrollbarWidth: 'thin',
+            scrollbarColor: '#1e2d4a transparent'
           }}>
+            {chatHistory.length === 0 && (
+              <div style={{ 
+                textAlign: 'center', 
+                color: '#64748b', 
+                fontSize: '0.82rem', 
+                padding: '2rem 1rem',
+                fontStyle: 'italic'
+              }}>
+                Start speaking or use the buttons to begin your consultation.
+              </div>
+            )}
             {chatHistory.map((msg, idx) => (
               <div
                 key={idx}
                 style={{
                   display: 'flex',
                   justifyContent: msg.role === 'user' ? 'flex-end' : 'flex-start',
-                  marginBottom: '1rem'
+                  marginBottom: '0.7rem'
                 }}
               >
                 <div
                   style={{
-                    maxWidth: '80%',
-                    padding: '1rem',
-                    borderRadius: '12px',
-                    background: msg.role === 'user' ? '#4f46e5' : '#f3f4f6',
-                    color: msg.role === 'user' ? 'white' : '#111827',
-                    whiteSpace: 'pre-wrap'
+                    maxWidth: '82%',
+                    padding: '0.7rem 0.9rem',
+                    borderRadius: '10px',
+                    background: msg.role === 'user' 
+                      ? 'linear-gradient(135deg, #0d9488, #14b8a6)' 
+                      : '#243352',
+                    color: msg.role === 'user' ? '#ffffff' : '#cbd5e1',
+                    whiteSpace: 'pre-wrap',
+                    fontSize: '0.85rem',
+                    lineHeight: 1.55,
+                    border: msg.role === 'user' ? 'none' : '1px solid #1e2d4a',
+                    boxShadow: msg.role === 'user' ? '0 2px 8px rgba(20,184,166,0.25)' : 'none'
                   }}
                 >
                   {msg.content}
