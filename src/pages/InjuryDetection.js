@@ -57,31 +57,31 @@ const InjuryDetection = () => {
           accept="image/*"
           onChange={handleFileSelect}
         />
-        <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>📸</div>
-        <p>Click to upload an image of the injury</p>
-        <p style={{ fontSize: '0.9rem', color: '#666', marginTop: '0.5rem' }}>
+        <div style={{ fontSize: '2.8rem', marginBottom: '0.75rem' }}>📸</div>
+        <p style={{ color: '#cbd5e1', fontWeight: 500 }}>Click to upload an image of the injury</p>
+        <p style={{ fontSize: '0.82rem', color: '#64748b', marginTop: '0.4rem' }}>
           Supports: JPG, PNG, GIF
         </p>
       </div>
 
       {preview && (
-        <div style={{ marginTop: '2rem', textAlign: 'center' }}>
-          <h3>Preview:</h3>
+        <div style={{ marginTop: '1.75rem', textAlign: 'center' }}>
+          <h3 style={{ color: '#cbd5e1', fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '0.6px', marginBottom: '0.75rem' }}>Preview</h3>
           <img 
             src={preview} 
             alt="Injury preview" 
             style={{ 
               maxWidth: '100%', 
-              maxHeight: '400px', 
-              borderRadius: '10px',
-              marginTop: '1rem',
-              boxShadow: '0 4px 10px rgba(0,0,0,0.1)'
+              maxHeight: '380px', 
+              borderRadius: '12px',
+              border: '1px solid #1e2d4a',
+              boxShadow: '0 4px 16px rgba(0,0,0,0.3)'
             }} 
           />
         </div>
       )}
 
-      <div style={{ display: 'flex', gap: '1rem', marginTop: '2rem' }}>
+      <div style={{ display: 'flex', gap: '0.75rem', marginTop: '1.75rem' }}>
         <button 
           className="btn btn-primary" 
           onClick={handleAnalyze}
@@ -109,20 +109,23 @@ const InjuryDetection = () => {
             <ul style={{ marginTop: '0.5rem', paddingLeft: '1.5rem' }}>
              {Array.isArray(result?.detected_injuries) && result.detected_injuries.map((injury, idx) => (
             <li key={idx}>{injury}</li>
-
               ))}
             </ul>
           </div>
 
-          <div style={{ marginBottom: '1.5rem' }}>
+          <div style={{ marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
             <strong>Severity Level:</strong>
             <span style={{ 
-              marginLeft: '1rem',
-              padding: '0.25rem 1rem',
-              background: result.severity === 'severe' ? '#dc3545' : 
-                         result.severity === 'moderate' ? '#ffc107' : '#28a745',
-              color: 'white',
+              padding: '0.28rem 0.9rem',
+              background: result.severity === 'severe' ? 'rgba(239,68,68,0.15)' : 
+                         result.severity === 'moderate' ? 'rgba(251,191,36,0.15)' : 'rgba(34,197,94,0.15)',
+              color: result.severity === 'severe' ? '#f87171' : 
+                     result.severity === 'moderate' ? '#fbbf24' : '#4ade80',
+              border: `1px solid ${result.severity === 'severe' ? 'rgba(239,68,68,0.3)' : 
+                         result.severity === 'moderate' ? 'rgba(251,191,36,0.3)' : 'rgba(34,197,94,0.3)'}`,
               borderRadius: '20px',
+              fontSize: '0.82rem',
+              fontWeight: 600,
               textTransform: 'capitalize'
             }}>
               {result.severity}
@@ -131,12 +134,12 @@ const InjuryDetection = () => {
 
           <div style={{ marginBottom: '1.5rem' }}>
             <strong>Recommendations:</strong>
-            <p style={{ marginTop: '0.5rem' }}>{result.recommendations}</p>
+            <p style={{ marginTop: '0.4rem', color: '#cbd5e1' }}>{result.recommendations}</p>
           </div>
 
           <div style={{ whiteSpace: 'pre-line', lineHeight: '1.8' }}>
             <strong>Detailed Analysis:</strong>
-            <div style={{ marginTop: '0.5rem' }}>{result.analysis}</div>
+            <div style={{ marginTop: '0.4rem', color: '#cbd5e1' }}>{result.analysis}</div>
           </div>
         </div>
       )}
