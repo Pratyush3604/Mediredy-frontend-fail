@@ -64,17 +64,10 @@ const ReportAnalysis = () => {
       <p className="page-subtitle">Upload X-rays, MRIs, or other medical reports for AI analysis</p>
 
       <div className="form-group">
-        <label>Report Type:</label>
+        <label>Report Type</label>
         <select 
           value={reportType} 
           onChange={(e) => setReportType(e.target.value)}
-          style={{ 
-            width: '100%',
-            padding: '0.75rem',
-            border: '2px solid #e0e0e0',
-            borderRadius: '8px',
-            fontSize: '1rem'
-          }}
         >
           <option value="">Select report type...</option>
           {reportTypes.map((type) => (
@@ -90,31 +83,31 @@ const ReportAnalysis = () => {
           accept="image/*,.pdf"
           onChange={handleFileSelect}
         />
-        <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>🏥</div>
-        <p>Click to upload your medical report</p>
-        <p style={{ fontSize: '0.9rem', color: '#666', marginTop: '0.5rem' }}>
+        <div style={{ fontSize: '2.8rem', marginBottom: '0.75rem' }}>🏥</div>
+        <p style={{ color: '#cbd5e1', fontWeight: 500 }}>Click to upload your medical report</p>
+        <p style={{ fontSize: '0.82rem', color: '#64748b', marginTop: '0.4rem' }}>
           Supports: JPG, PNG, PDF
         </p>
       </div>
 
       {preview && (
-        <div style={{ marginTop: '2rem', textAlign: 'center' }}>
-          <h3>Preview:</h3>
+        <div style={{ marginTop: '1.75rem', textAlign: 'center' }}>
+          <h3 style={{ color: '#cbd5e1', fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '0.6px', marginBottom: '0.75rem' }}>Preview</h3>
           <img 
             src={preview} 
             alt="Report preview" 
             style={{ 
               maxWidth: '100%', 
-              maxHeight: '400px', 
-              borderRadius: '10px',
-              marginTop: '1rem',
-              boxShadow: '0 4px 10px rgba(0,0,0,0.1)'
+              maxHeight: '380px', 
+              borderRadius: '12px',
+              border: '1px solid #1e2d4a',
+              boxShadow: '0 4px 16px rgba(0,0,0,0.3)'
             }} 
           />
         </div>
       )}
 
-      <div style={{ display: 'flex', gap: '1rem', marginTop: '2rem' }}>
+      <div style={{ display: 'flex', gap: '0.75rem', marginTop: '1.75rem' }}>
         <button 
           className="btn btn-primary" 
           onClick={handleAnalyze}
@@ -137,39 +130,40 @@ const ReportAnalysis = () => {
         <div className="result-box">
           <h3>Report Analysis Results</h3>
           
-          <div style={{ marginBottom: '1.5rem' }}>
-            <strong>Report Type:</strong> {result.report_type}
+          <div style={{ marginBottom: '1rem' }}>
+            <strong>Report Type:</strong> <span style={{ color: '#cbd5e1' }}>{result.report_type}</span>
           </div>
 
-          <div style={{ marginBottom: '1.5rem' }}>
-            <strong>File Name:</strong> {result.filename}
+          <div style={{ marginBottom: '1rem' }}>
+            <strong>File Name:</strong> <span style={{ color: '#cbd5e1' }}>{result.filename}</span>
           </div>
 
           <div style={{ whiteSpace: 'pre-line', lineHeight: '1.8' }}>
             <strong>Analysis:</strong>
-            <div style={{ marginTop: '0.5rem' }}>{result.analysis}</div>
+            <div style={{ marginTop: '0.4rem', color: '#cbd5e1' }}>{result.analysis}</div>
           </div>
 
           <div style={{ 
             marginTop: '1.5rem', 
-            padding: '1rem', 
-            background: '#fff3cd',
+            padding: '1rem 1.2rem', 
+            background: 'rgba(251,191,36,0.07)',
             borderRadius: '8px',
-            borderLeft: '4px solid #ffc107'
+            border: '1px solid rgba(251,191,36,0.25)'
           }}>
-            <strong>⚠️ {result.disclaimer}</strong>
+            <strong style={{ color: '#fbbf24' }}>⚠️ {result.disclaimer}</strong>
           </div>
         </div>
       )}
 
       <div style={{ 
-        marginTop: '3rem', 
-        padding: '1.5rem', 
-        background: '#e7f3ff',
+        marginTop: '2rem', 
+        padding: '1.25rem 1.5rem', 
+        background: 'rgba(56,189,248,0.06)',
+        border: '1px solid rgba(56,189,248,0.2)',
         borderRadius: '10px'
       }}>
-        <h4 style={{ color: '#0056b3', marginBottom: '0.5rem' }}>💡 Supported Report Types</h4>
-        <ul style={{ paddingLeft: '1.5rem', color: '#0056b3' }}>
+        <h4 style={{ color: '#38bdf8', marginBottom: '0.5rem', fontSize: '0.88rem', fontWeight: 600 }}>💡 Supported Report Types</h4>
+        <ul style={{ paddingLeft: '1.4rem', color: '#64748b', fontSize: '0.85rem' }}>
           <li>X-rays (Chest, Abdominal, Skeletal)</li>
           <li>MRI Scans (Brain, Spinal, Joint)</li>
           <li>CT Scans</li>
