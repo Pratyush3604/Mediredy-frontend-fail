@@ -28,7 +28,6 @@ const SymptomChecker = () => {
       alert('Please select at least one symptom');
       return;
     }
-
     setLoading(true);
     try {
       const result = await assessSymptoms(selectedSymptoms, additionalInfo);
@@ -76,7 +75,7 @@ const SymptomChecker = () => {
         />
       </div>
 
-      <div style={{ display: 'flex', gap: '1rem' }}>
+      <div style={{ display: 'flex', gap: '0.75rem' }}>
         <button 
           className="btn btn-primary" 
           onClick={handleAssess}
@@ -99,18 +98,20 @@ const SymptomChecker = () => {
         <div className="result-box">
           <h3>Assessment Results</h3>
           <div style={{ marginBottom: '1rem' }}>
-            <strong>Your Symptoms:</strong> {assessment.symptoms.join(', ')}
+            <strong>Your Symptoms:</strong>{' '}
+            <span style={{ color: '#94a3b8' }}>{assessment.symptoms.join(', ')}</span>
           </div>
-          <div style={{ whiteSpace: 'pre-line', lineHeight: '1.8' }}>
+          <div style={{ whiteSpace: 'pre-line', lineHeight: '1.8', color: '#cbd5e1' }}>
             {assessment.assessment}
           </div>
           <div style={{ 
             marginTop: '1.5rem', 
-            padding: '1rem', 
-            background: '#fff3cd',
+            padding: '1rem 1.2rem', 
+            background: 'rgba(251,191,36,0.07)',
+            border: '1px solid rgba(251,191,36,0.25)',
             borderRadius: '8px'
           }}>
-            <strong>⚠️ {assessment.disclaimer}</strong>
+            <strong style={{ color: '#fbbf24' }}>⚠️ {assessment.disclaimer}</strong>
           </div>
         </div>
       )}
